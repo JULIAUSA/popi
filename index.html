@@ -8,8 +8,17 @@ body{
     text-align:center;
     font-family:Arial;
     margin-top:100px;
+    overflow: hidden;
 }
 
+/* Котик */
+#cat{
+    position:absolute;
+    width:60px;
+    transition: 0.1s linear;
+}
+
+/* Кнопки */
 button{
     padding:15px 30px;
     font-size:20px;
@@ -17,6 +26,8 @@ button{
     color:white;
     border:none;
     border-radius:10px;
+    margin: 10px;
+    position: relative;
 }
 
 .hidden{
@@ -24,23 +35,59 @@ button{
     font-size:30px;
     margin-top:30px;
 }
+
+/* Какашка */
+.poop {
+    position: absolute;
+    font-size:30px;
+    pointer-events: none;
+}
 </style>
 </head>
 
 <body>
 
-<h1>Нажми кнопку</h1>
+<h1>Вопрос для тебя ❤️</h1>
+<p>Любишь меня?</p>
 
-<button onclick="showLove()">Нажать</button>
+<button id="yesBtn">Да</button>
+<button id="noBtn">Нет</button>
 
 <div id="love" class="hidden">
 Я тебя люблю ❤️
 </div>
 
+<!-- Котик -->
+<img src="https://i.imgur.com/4AiXzf8.png" id="cat" alt="cat">
+
 <script>
-function showLove(){
-document.getElementById("love").style.display="block";
-}
+// Котик бежит за курсором
+const cat = document.getElementById('cat');
+document.addEventListener('mousemove', e => {
+    const catX = e.clientX - cat.width / 2;
+    const catY = e.clientY - cat.height / 2;
+    cat.style.left = catX + 'px';
+    cat.style.top = catY + 'px';
+});
+
+// Кнопка "Да" показывает сообщение
+document.getElementById('yesBtn').addEventListener('click', () => {
+    document.getElementById('love').style.display = 'block';
+});
+
+// Кнопка "Нет" — появляется какашка при наведении
+const noBtn = document.getElementById('noBtn');
+noBtn.addEventListener('mouseenter', e => {
+    const poop = document.createElement('div');
+    poop.className = 'poop';
+    poop.textContent = '💩';
+    poop.style.left = (e.clientX + Math.random()*30 - 15) + 'px';
+    poop.style.top = (e.clientY + Math.random()*30 - 15) + 'px';
+    document.body.appendChild(poop);
+
+    // Удаляем через 3 секунды
+    setTimeout(() => poop.remove(), 3000);
+});
 </script>
 
 </body>
