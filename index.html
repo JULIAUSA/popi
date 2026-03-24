@@ -28,6 +28,7 @@ button{
     border-radius:10px;
     margin: 10px;
     position: relative;
+    cursor: pointer;
 }
 
 /* Анимации */
@@ -77,41 +78,46 @@ button{
 Я тебя люблю ❤️
 </div>
 
-<!-- Рыжий белый котик -->
-<img src="https://pixabay.com/get/g93f88fb3bb8e5bb8a74278a98731a3b8a3b03ae46dbcfb21f4df1aaed70a0d99c77db717b593e1c12f1ef08b7ee38be0_640.gif" id="cat">
+<!-- Надёжный рыжий котик -->
+<img src="https://i.imgur.com/5Yq1XbH.png" id="cat" alt="котик">
 
 <script>
-// Котик бегает за курсором
-const cat = document.getElementById('cat');
-document.addEventListener('mousemove', e => {
-    const x = e.clientX - cat.width/2;
-    const y = e.clientY - cat.height/2;
-    cat.style.left = x + 'px';
-    cat.style.top = y + 'px';
-});
+document.addEventListener('DOMContentLoaded', () => {
 
-// Кнопка "Да" — вылетают сердечки
-document.getElementById('yesBtn').addEventListener('click', e => {
-    for(let i=0;i<5;i++){
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.textContent = '❤️';
-        heart.style.left = (e.clientX + Math.random()*60 - 30) + 'px';
-        heart.style.top = (e.clientY + Math.random()*30 - 15) + 'px';
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 1500);
-    }
-});
+    const cat = document.getElementById('cat');
 
-// Кнопка "Нет" — падают 💩
-document.getElementById('noBtn').addEventListener('click', e => {
-    const poop = document.createElement('div');
-    poop.className = 'poop';
-    poop.textContent = '💩';
-    poop.style.left = (e.clientX - 15) + 'px';
-    poop.style.top = (e.clientY - 15) + 'px';
-    document.body.appendChild(poop);
-    setTimeout(() => poop.remove(), 2000);
+    // Котик бегает за курсором
+    document.addEventListener('mousemove', e => {
+        const x = e.clientX - cat.width/2;
+        const y = e.clientY - cat.height/2;
+        cat.style.left = x + 'px';
+        cat.style.top = y + 'px';
+    });
+
+    // Кнопка "Да" — вылетают сердечки
+    document.getElementById('yesBtn').addEventListener('click', e => {
+        for(let i=0;i<5;i++){
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = '❤️';
+            heart.style.left = (e.clientX + Math.random()*60 - 30) + 'px';
+            heart.style.top = (e.clientY + Math.random()*30 - 15) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 1500);
+        }
+    });
+
+    // Кнопка "Нет" — падают 💩
+    document.getElementById('noBtn').addEventListener('click', e => {
+        const poop = document.createElement('div');
+        poop.className = 'poop';
+        poop.textContent = '💩';
+        poop.style.left = (e.clientX - 15) + 'px';
+        poop.style.top = (e.clientY - 15) + 'px';
+        document.body.appendChild(poop);
+        setTimeout(() => poop.remove(), 2000);
+    });
+
 });
 </script>
 
