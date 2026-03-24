@@ -16,7 +16,7 @@ body{
     position:absolute;
     width:80px;
     transition:0.1s linear;
-    pointer-events: none; /* чтобы не мешал кнопкам */
+    pointer-events: none;
 }
 
 /* Кнопки */
@@ -35,38 +35,43 @@ button{
 /* Анимации */
 @keyframes floatUp {
     0% { transform: translateY(0) scale(1); opacity:1; }
-    100% { transform: translateY(-150px) scale(1.5); opacity:0; }
-}
-
-@keyframes fallDown {
-    0% { transform: translateY(0) rotate(0deg); opacity:1; }
-    100% { transform: translateY(300px) rotate(360deg); opacity:0; }
+    100% { transform: translateY(-100px) scale(1.5); opacity:0; }
 }
 
 .hidden{
     display:none;
-    font-size:30px;
-    margin-top:30px;
 }
 
-/* Сердечко */
-.heart {
+/* Маленькие сердечки и какашки */
+.heart, .poop {
     position: absolute;
-    font-size: 30px;
+    font-size: 25px;
     pointer-events:none;
-    animation: floatUp 1.5s forwards;
+    animation: floatUp 1s forwards;
 }
 
-/* Жопа */
-.poop {
-    position: absolute;
-    font-size: 30px;
-    pointer-events:none;
-    animation: fallDown 2s forwards;
+/* Большие сердце и попа */
+#bigHeart, #bigPoop {
+    position: fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    font-size:200px;
+    display:none;
+    z-index: 1000;
+}
+#loveText {
+    position: fixed;
+    top:60%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    font-size:50px;
+    color:red;
+    display:none;
+    z-index:1001;
 }
 </style>
 </head>
-
 <body>
 
 <h1>Вопрос для тебя ❤️</h1>
@@ -75,52 +80,71 @@ button{
 <button id="yesBtn">Да</button>
 <button id="noBtn">Нет</button>
 
-<div id="love" class="hidden">
-Я тебя люблю ❤️
-</div>
+<!-- Котик -->
+<img src="https://i.imgur.com/4AiXzf8.png" id="cat" alt="котик">
 
-<!-- Рыжий белый котик -->
-<img src="https://cdn.creazilla.com/cliparts/67953/purple-cat-clipart-md.png" id="cat" alt="котик">
+<!-- Большие эффекты -->
+<div id="bigHeart">❤️</div>
+<div id="bigPoop">💩</div>
+<div id="loveText">Я тебя люблю ❤️</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-
     const cat = document.getElementById('cat');
 
-    // Котик бегает за курсором, немного отставая и ниже курсора
+    // Котик бегает за курсором
     document.addEventListener('mousemove', e => {
-        const offsetX = 30; // смещение вправо
-        const offsetY = 40; // смещение вниз, чтобы не перекрывал кнопки
+        const offsetX = 30;
+        const offsetY = 40;
         const x = e.clientX + offsetX - cat.width/2;
         const y = e.clientY + offsetY - cat.height/2;
         cat.style.left = x + 'px';
         cat.style.top = y + 'px';
     });
 
-    // Кнопка "Да" — вылетают сердечки
-    document.getElementById('yesBtn').addEventListener('click', e => {
-        for(let i=0;i<5;i++){
-            const heart = document.createElement('div');
-            heart.className = 'heart';
-            heart.textContent = '❤️';
-            heart.style.left = (e.clientX + Math.random()*60 - 30) + 'px';
-            heart.style.top = (e.clientY + Math.random()*30 - 15) + 'px';
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 1500);
-        }
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+
+    // Наведение на "Да" → маленькие сердечки
+    yesBtn.addEventListener('mouseenter', e => {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.textContent = '❤️';
+        heart.style.left = (e.clientX + Math.random()*30 -15)+'px';
+        heart.style.top = (e.clientY + Math.random()*30 -15)+'px';
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),1000);
     });
 
-    // Кнопка "Нет" — падают 💩
-    document.getElementById('noBtn').addEventListener('click', e => {
+    // Наведение на "Нет" → маленькие 💩
+    noBtn.addEventListener('mouseenter', e => {
         const poop = document.createElement('div');
         poop.className = 'poop';
         poop.textContent = '💩';
-        poop.style.left = (e.clientX - 15) + 'px';
-        poop.style.top = (e.clientY - 15) + 'px';
+        poop.style.left = (e.clientX + Math.random()*30 -15)+'px';
+        poop.style.top = (e.clientY + Math.random()*30 -15)+'px';
         document.body.appendChild(poop);
-        setTimeout(() => poop.remove(), 2000);
+        setTimeout(()=>poop.remove(),1000);
     });
 
+    // Клик на "Да" → большое сердце и текст
+    yesBtn.addEventListener('click', () => {
+        document.getElementById('bigHeart').style.display='block';
+        document.getElementById('loveText').style.display='block';
+        setTimeout(()=>{
+            document.getElementById('bigHeart').style.display='none';
+            document.getElementById('loveText').style.display='none';
+        },2000);
+    });
+
+    // Клик на "Нет" → огромная 💩
+    noBtn.addEventListener('click', () => {
+        const bigPoop = document.getElementById('bigPoop');
+        bigPoop.style.display='block';
+        setTimeout(()=>{
+            bigPoop.style.display='none';
+        },2000);
+    });
 });
 </script>
 
