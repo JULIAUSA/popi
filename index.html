@@ -15,7 +15,7 @@ body{
 #cat{
     position:absolute;
     width:80px;
-    transition: 0.1s linear;
+    transition:0.1s linear;
 }
 
 /* Кнопки */
@@ -30,17 +30,37 @@ button{
     position: relative;
 }
 
+/* Анимации */
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity:1; }
+    100% { transform: translateY(-150px) scale(1.5); opacity:0; }
+}
+
+@keyframes fallDown {
+    0% { transform: translateY(0) rotate(0deg); opacity:1; }
+    100% { transform: translateY(300px) rotate(360deg); opacity:0; }
+}
+
 .hidden{
     display:none;
     font-size:30px;
     margin-top:30px;
 }
 
-/* Какашка */
+/* Сердечко */
+.heart {
+    position: absolute;
+    font-size: 30px;
+    pointer-events:none;
+    animation: floatUp 1.5s forwards;
+}
+
+/* Жопа */
 .poop {
     position: absolute;
-    font-size:30px;
-    pointer-events: none;
+    font-size: 30px;
+    pointer-events:none;
+    animation: fallDown 2s forwards;
 }
 </style>
 </head>
@@ -57,36 +77,41 @@ button{
 Я тебя люблю ❤️
 </div>
 
-<!-- Котик (GIF с прозрачным фоном) -->
-<img src="https://i.imgur.com/JYUB0m3.gif" id="cat" alt="cat">
+<!-- Рыжий белый котик -->
+<img src="https://pixabay.com/get/g93f88fb3bb8e5bb8a74278a98731a3b8a3b03ae46dbcfb21f4df1aaed70a0d99c77db717b593e1c12f1ef08b7ee38be0_640.gif" id="cat">
 
 <script>
-// Котик бежит за курсором
+// Котик бегает за курсором
 const cat = document.getElementById('cat');
 document.addEventListener('mousemove', e => {
-    const catX = e.clientX - cat.width / 2;
-    const catY = e.clientY - cat.height / 2;
-    cat.style.left = catX + 'px';
-    cat.style.top = catY + 'px';
+    const x = e.clientX - cat.width/2;
+    const y = e.clientY - cat.height/2;
+    cat.style.left = x + 'px';
+    cat.style.top = y + 'px';
 });
 
-// Кнопка "Да" показывает сообщение
-document.getElementById('yesBtn').addEventListener('click', () => {
-    document.getElementById('love').style.display = 'block';
+// Кнопка "Да" — вылетают сердечки
+document.getElementById('yesBtn').addEventListener('click', e => {
+    for(let i=0;i<5;i++){
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.textContent = '❤️';
+        heart.style.left = (e.clientX + Math.random()*60 - 30) + 'px';
+        heart.style.top = (e.clientY + Math.random()*30 - 15) + 'px';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 1500);
+    }
 });
 
-// Кнопка "Нет" — появляется какашка при наведении
-const noBtn = document.getElementById('noBtn');
-noBtn.addEventListener('mouseenter', e => {
+// Кнопка "Нет" — падают 💩
+document.getElementById('noBtn').addEventListener('click', e => {
     const poop = document.createElement('div');
     poop.className = 'poop';
     poop.textContent = '💩';
-    poop.style.left = (e.clientX + Math.random()*30 - 15) + 'px';
-    poop.style.top = (e.clientY + Math.random()*30 - 15) + 'px';
+    poop.style.left = (e.clientX - 15) + 'px';
+    poop.style.top = (e.clientY - 15) + 'px';
     document.body.appendChild(poop);
-
-    // Удаляем через 3 секунды
-    setTimeout(() => poop.remove(), 3000);
+    setTimeout(() => poop.remove(), 2000);
 });
 </script>
 
