@@ -16,6 +16,7 @@ body{
     position:absolute;
     width:80px;
     transition:0.1s linear;
+    pointer-events: none; /* чтобы не мешал кнопкам */
 }
 
 /* Кнопки */
@@ -78,7 +79,7 @@ button{
 Я тебя люблю ❤️
 </div>
 
-<!-- Надёжный рыжий котик -->
+<!-- Рыжий белый котик -->
 <img src="https://i.imgur.com/5Yq1XbH.png" id="cat" alt="котик">
 
 <script>
@@ -86,10 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const cat = document.getElementById('cat');
 
-    // Котик бегает за курсором
+    // Котик бегает за курсором, немного отставая и ниже курсора
     document.addEventListener('mousemove', e => {
-        const x = e.clientX - cat.width/2;
-        const y = e.clientY - cat.height/2;
+        const offsetX = 30; // смещение вправо
+        const offsetY = 40; // смещение вниз, чтобы не перекрывал кнопки
+        const x = e.clientX + offsetX - cat.width/2;
+        const y = e.clientY + offsetY - cat.height/2;
         cat.style.left = x + 'px';
         cat.style.top = y + 'px';
     });
